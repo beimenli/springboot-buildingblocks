@@ -15,7 +15,11 @@ import org.springframework.hateoas.ResourceSupport;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 //@Entity: define a table
+@ApiModel(description = "Model to create a new user")
 @Entity
 @Table(name="user")
 //@JsonFilter(value="userFilter") -- Used for MappingJacksonValue filtering section
@@ -23,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class User extends ResourceSupport {
 	
 	//@Id: define primary key, only one allowed
+	@ApiModelProperty(notes = "userid - Unique identifier of user", required = true, position = 1)
 	@Id
 	//@GeneratedValue: generate sequence value for primary key
 	@GeneratedValue
@@ -30,16 +35,20 @@ public class User extends ResourceSupport {
 	private Long userid;
 	
 	//@Column: define column name
+	@ApiModelProperty(notes = "username of user", required = false, position = 2)
+	@Size(min=2, max = 50) 
 	@NotEmpty(message = "Username is Mandatory field. Please provide username")
 	@Column(name="USER_NAME", length=50, nullable=false, unique=true)
 	@JsonView(Views.External.class)
 	private String username;
 	
-	@Size(min=2, message="FirstName should have atleast 2 characters") 
+	@ApiModelProperty(notes = "First name of the User.", example = "Kalyan", required = false, position = 3)
+	@Size(min=2, max = 50, message="FirstName should have atleast 2 characters") 
 	@Column(name="FIRST_NAME", length=50, nullable=false)
 	@JsonView(Views.External.class)
 	private String firstname;
 	
+	@ApiModelProperty(notes = "SSN of the User.", example = "SSN1010", required = true, position = 4)
 	@Column(name="LAST_NAME", length=50, nullable=false)
 	@JsonView(Views.External.class)
 	private String lastname;
